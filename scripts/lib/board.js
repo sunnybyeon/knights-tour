@@ -23,21 +23,13 @@ export class Square {
         this.y = y;
 
         this.element.addEventListener("click", () => {
-            if (
-                this.board.visitedSquares.length > 0 &&
-                this.board.nextSquares.indexOf(this) === -1
-            ) {
-                return;
-            }
-            this.visited = true;
-            this.mark();
-            this.board.currentSquare = this;
-            this.board.clickListener();
+            this.board.clickListener(this);
         });
     }
 
     /** Mark this square as visited. */
-    mark() {
+    markAsVisited() {
+        this.visited = true;
         this.element.insertAdjacentHTML("afterbegin", "<span>&#9822;</span>");
         if (this.board.visitedSquares.length > 0) {
             this.board.visitedSquares[
@@ -70,6 +62,14 @@ export class Board {
     currentSquare;
     /** @type {Array<Square>} The squares that have been visited in order. */
     visitedSquares = [];
+    /** @type {number} The state of the board. */
+    state = Board.STATE.UNFINISHED;
+
+    static STATE = {
+        UNFINISHED: 0,
+        SOLVED: 1,
+        FAILED: 2,
+    };
 
     /**
      * @param {number} size The size of this board.
@@ -95,7 +95,7 @@ export class Board {
     get squares() {
         return this.ranks.reduce((prev, rank) => prev.concat(rank), []);
     }
-    /** @returns {?Array<Square>} All the squares the next move can lead to. */
+    /** @returns {Array<Square>} All the squares the next move can lead to. */
     get nextSquares() {
         if (!this.currentSquare) return [];
         const { x, y } = this.currentSquare;
@@ -128,26 +128,47 @@ export class Board {
     attach(parent) {
         parent.appendChild(this.element);
     }
-    /** Resets the board. */
-    reset() {
-        const parent = this.element.parentElement;
-        this.element.remove();
-        const board = new Board(this.size, this.showHints);
-        board.attach(parent);
+    /**
+     * Resets the board.
+     * @param {number} [size] The size of the board to make.
+     */
+    reset(size = this.size) {
+        this.size = size;
+        this.currentSquare = undefined;
+        this.visitedSquares = [];
+        this.state = Board.STATE.UNFINISHED;
+        this.element.replaceChildren();
+        this.element.style.setProperty("--board-size", String(size));
+        this.ranks = [];
+        for (let y = 0; y < this.size; y++) {
+            this.ranks.push([]);
+            for (let x = 0; x < this.size; x++) {
+                this.ranks[y].push(new Square(this, x, y));
+                this.element.appendChild(this.getSquare(x, y).element);
+            }
+        }
     }
-    /** Executed when an available square is hit. */
-    clickListener() {
+    /**
+     * Executed when an available square is hit.
+     * @param {Square} clickedSquare The square that was clicked.
+     */
+    clickListener(clickedSquare) {
+        if (
+            this.visitedSquares.length > 0 &&
+            this.nextSquares.indexOf(clickedSquare) === -1
+        ) {
+            return;
+        }
+        this.nextSquares.forEach((square) => square.unhint());
+        clickedSquare.markAsVisited();
+        this.currentSquare = clickedSquare;
         if (this.showHints) {
-            this.squares.forEach((square) => square.unhint());
             this.nextSquares.forEach((square) => square.hint());
         }
         if (this.visitedSquares.length === this.size ** 2) {
-            alert("Congratulations!");
+            this.state = Board.STATE.SOLVED;
         } else if (this.nextSquares.length === 0) {
-            setTimeout(() => {
-                alert("Try again.");
-                this.reset();
-            }, 500);
+            this.state = Board.STATE.FAILED;
         }
     }
 }

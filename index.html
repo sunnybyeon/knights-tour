@@ -1,44 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap"
             rel="stylesheet"
         />
         <link rel="stylesheet" href="./style.css" />
+        <script type="module" src="./scripts/index.js" defer></script>
         <title>Knight's Tour</title>
     </head>
     <body>
         <main></main>
-        <article>
-            <h1>Knight’s Tour</h1>
-            <blockquote cite="https://en.wikipedia.org/wiki/Knight%27s_tour">
-                <p>
-                    A <b>Knight’s Tour</b> is a sequence of moves of a knight on
-                    a chessboard such that the knight visits every square
-                    exactly once. If the knight ends on a square that is one
-                    knight's move from the beginning square (so that it could
-                    tour the board again immediately, following the same path),
-                    the tour is closed (or re-entrant); otherwise, it is open.
-                </p>
-            </blockquote>
-            <cite
-                ><a
-                    href="https://en.wikipedia.org/wiki/Knight%27s_tour"
-                    target="_blank"
-                    >Knight’s tour - Wikipedia</a
-                ></cite
-            >
-        </article>
-        <script type="module">
-            import { Board } from "./lib/board.js";
-
-            const board = new Board(6, true);
-            board.attach(document.getElementsByTagName("main")[0]);
-        </script>
+        <div>
+            <article class="message-box">
+                <h1>Messages</h1>
+                <div class="default-message">
+                    Click or tap a square and start solving!
+                </div>
+                <div
+                    class="solved-message"
+                    style="display: none; color: hsl(80, 65%, 30%)"
+                >
+                    You did it! Congratulations!
+                </div>
+                <div
+                    class="failed-message"
+                    style="display: none; color: hsl(0, 65%, 50%)"
+                >
+                    Sorry... Try again!
+                </div>
+                <div
+                    class="wrong-board-size-message"
+                    style="display: none; color: hsl(0, 65%, 50%)"
+                >
+                    The board size should be 5 or bigger.
+                </div>
+            </article>
+            <article class="controls">
+                <section class="board-size-control">
+                    <label for="board-size">Board Size: </label>
+                    <input
+                        type="number"
+                        name="board-size"
+                        id="board-size"
+                        value="6"
+                        min="5"
+                    />
+                </section>
+                <button name="reset-board">Reset Board</button>
+                <section class="show-hints-control">
+                    <label for="show-hints"
+                        >Show Hints (available moves)
+                    </label>
+                    <input
+                        type="checkbox"
+                        name="show-hints"
+                        id="show-hints"
+                        checked
+                    />
+                </section>
+            </article>
+            <article class="description">
+                <h1>Knight’s Tour</h1>
+                <blockquote
+                    cite="https://en.wikipedia.org/wiki/Knight%27s_tour"
+                >
+                    <p>
+                        A <b>Knight’s Tour</b> is a sequence of moves of a
+                        knight on a chessboard such that the knight visits every
+                        square exactly once. If the knight ends on a square that
+                        is one knight's move from the beginning square (so that
+                        it could tour the board again immediately, following the
+                        same path), the tour is closed (or re-entrant);
+                        otherwise, it is open.
+                    </p>
+                </blockquote>
+                <cite
+                    ><a
+                        href="https://en.wikipedia.org/wiki/Knight%27s_tour"
+                        target="_blank"
+                        >Knight’s tour - Wikipedia</a
+                    ></cite
+                >
+            </article>
+        </div>
     </body>
 </html>

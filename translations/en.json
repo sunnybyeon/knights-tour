@@ -1,0 +1,14 @@
+{
+    "title": "Knight's Tour",
+    "description": "<p>A <b>Knight’s Tour</b> is a sequence of moves of a knight on a chessboard such that the knight visits every square exactly once. If the knight ends on a square that is one knight's move from the beginning square (so that it could tour the board again immediately, following the same path), the tour is closed (or re-entrant); otherwise, it is open.</p>",
+    "descriptionSource": "Knight’s tour - Wikipedia",
+    "descriptionSourceURL": "https://en.wikipedia.org/wiki/Knight%27s_tour",
+    "messageBoxTitle": "Messages",
+    "defaultMessage": "Click or tap a square and start solving!",
+    "solvedMessage": "You did it! Congratulations!",
+    "failedMessage": "Sorry... Try again!",
+    "wrongBoardSizeMessage": "The board size should be 5 by 5 or bigger.",
+    "boardSizeLabel": "Board Size",
+    "resetBoardButton": "Reset Board",
+    "showHintsLabel": "Show Hints (available moves)"
+}

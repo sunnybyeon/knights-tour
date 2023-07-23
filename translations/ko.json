@@ -1,0 +1,14 @@
+{
+    "title": "기사의 여행",
+    "description": "<p><b>기사의 여행</b>은 체스보드의 나이트에 대한 수학적인 알고리즘 문제의 일종이다. 체스 피스를 움직이는 규칙에 따라 나이트를 모든 칸으로 정확히 한 번씩 갈 수 있도록 하는 방법을 찾는 문제이다. 이 문제의 해법은 수없이 많다. 기사가 마지막 위치에 가서 첫 번째 위치로 공격을 할 수 있는 상태가 되면 여행이 닫혀 있다고 하고, 그렇지 않으면 여행이 열려 있다고 한다.</p>",
+    "descriptionSource": "기사의 여행 - 위키백과, 우리 모두의 백과사전",
+    "descriptionSourceURL": "https://ko.wikipedia.org/wiki/%EA%B8%B0%EC%82%AC%EC%9D%98_%EC%97%AC%ED%96%89",
+    "messageBoxTitle": "메시지",
+    "defaultMessage": "아무 칸이나 클릭/터치해서 시작하세요!",
+    "solvedMessage": "성공!! 축하합니다!!",
+    "failedMessage": "안타까워요..ㅠㅜ 다시 시도해보세요!",
+    "wrongBoardSizeMessage": "체스판은 5⨉5 이상이어야 합니다!",
+    "boardSizeLabel": "체스판 크기",
+    "resetBoardButton": "판 초기화 / 새로운 판 크기 적용",
+    "showHintsLabel": "갈 수 있는 칸 표시"
+}

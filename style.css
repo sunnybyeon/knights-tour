@@ -4,45 +4,131 @@
     color: inherit;
 }
 :root {
-    --background-color: hsl(0, 0, 100%);
+    --background-color: hsl(0, 0%, 100%);
     --background-hint-color: hsl(80, 25%, 75%);
     --foreground-primary-color: hsl(0, 0%, 0%);
-    --foreground-secondary-color: hsl(0, 0%, 35%);
+    --foreground-secondary-color: hsl(0, 0%, 50%);
     --thick-border-width: 3px;
     --min-square-width: 30px;
 }
 html {
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    min-height: fill-available;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 body {
     background-color: var(--background-color);
     color: var(--foreground-primary-color);
     font-family: "Inter", sans-serif;
+    max-width: 1000px;
     margin: 0;
     padding: 3vw;
     overflow: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3vw;
 }
-article h1 {
+body > * {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: 0.5rem 0;
+}
+body > main {
+    flex-basis: 360px;
+}
+body > div {
+    flex-basis: 240px;
+}
+
+article.message-box {
+    border: var(--thick-border-width) solid var(--foreground-secondary-color);
+    border-radius: 1rem;
+    padding: 1.5rem 1rem 1.3rem;
+    position: relative;
+    text-align: center;
+}
+article.message-box h1 {
+    margin: 0;
+    padding: 0 0.5rem;
+    display: inline-block;
+    position: absolute;
+    top: -1ch;
+    left: 1.5rem;
+    background-color: var(--background-color);
+    font-size: 1.2rem;
     font-weight: 900;
 }
-article blockquote {
+article.message-box div {
+    font-weight: 500;
+}
+article.controls {
+    margin: 1rem 0 0;
+}
+article.controls > * + * {
+    margin-top: 0.75rem;
+}
+article.controls > section.board-size-control {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+article.controls > section.board-size-control > input {
+    width: 3rem;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+article.controls > button {
+    cursor: pointer;
+    width: 100%;
+    font-weight: 500;
+}
+article.controls label {
+    flex-shrink: 0;
+    font-weight: 500;
+}
+article.controls input[type="number"],
+article.controls button {
+    padding: 0.75ch 0.5rem;
+    border: calc(var(--thick-border-width) / 1.5) solid
+        var(--foreground-secondary-color);
+    border-radius: 0.25rem;
+    text-align: center;
+}
+article.controls input[type="checkbox"] {
+    vertical-align: text-bottom;
+}
+article.description {
+    border-top: var(--thick-border-width) dashed
+        var(--foreground-secondary-color);
+    margin-top: min(2rem, 6vw);
+    padding-top: min(2rem, 6vw);
+}
+article.description h1 {
+    font-weight: 900;
+    margin-top: 0;
+}
+article.description blockquote {
     margin: 0;
 }
-article blockquote p {
+article.description blockquote p {
     margin-bottom: 0.5rem;
 }
 cite::before {
-    content: "—";
+    content: "\2014";
     margin-right: 0.75ch;
 }
 cite {
     color: var(--foreground-secondary-color);
     text-align: right;
     display: block;
+    margin-top: 1rem;
 }
 
 main article.board {
@@ -68,4 +154,5 @@ main article.square {
     justify-content: center;
     font-size: 1.5rem;
     cursor: pointer;
+    overflow: hidden;
 }
