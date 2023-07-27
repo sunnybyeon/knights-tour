@@ -1,4 +1,6 @@
 {
+    "fontFamily": "'Pretendard Variable', sans-serif",
+    "fontURL": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable-dynamic-subset.css",
     "title": "기사의 여행",
     "description": "<p><b>기사의 여행</b>은 체스보드의 나이트에 대한 수학적인 알고리즘 문제의 일종이다. 체스 피스를 움직이는 규칙에 따라 나이트를 모든 칸으로 정확히 한 번씩 갈 수 있도록 하는 방법을 찾는 문제이다. 이 문제의 해법은 수없이 많다. 기사가 마지막 위치에 가서 첫 번째 위치로 공격을 할 수 있는 상태가 되면 여행이 닫혀 있다고 하고, 그렇지 않으면 여행이 열려 있다고 한다.</p>",
     "descriptionSource": "기사의 여행 - 위키백과, 우리 모두의 백과사전",

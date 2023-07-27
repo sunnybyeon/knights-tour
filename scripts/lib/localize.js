@@ -1,6 +1,8 @@
 /**
  * The object containing the translations.
  * @typedef {Object} translations
+ * @property {string} fontFamily The value to use for the CSS font-family option.
+ * @property {string} fontURL The URL of the font to load using CSS import.
  * @property {string} title The title of the document.
  * @property {string} description The description for the knight's tour in HTML.
  * @property {string} descriptionSource The source of the description.

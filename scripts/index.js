@@ -2,6 +2,10 @@ import { Board } from "./lib/board.js";
 import { getTranslations } from "./lib/localize.js";
 
 getTranslations().then((translations) => {
+    document.styleSheets[0].insertRule(
+        `@import url("${translations.fontURL}");`
+    );
+    document.body.style.fontFamily = translations.fontFamily;
     document.title = translations.title;
     document.querySelector("article.description > h1").textContent =
         translations.title;
