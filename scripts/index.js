@@ -86,13 +86,7 @@ document.getElementsByName("reset-board")[0].addEventListener("click", () => {
     }
 });
 document.getElementsByName("show-hints")[0].addEventListener("click", () => {
-    const { checked } = /** @type {HTMLInputElement} */ (
+    board.showHints = /** @type {HTMLInputElement} */ (
         document.getElementsByName("show-hints")[0]
-    );
-    board.showHints = checked;
-    if (checked) {
-        board.nextSquares.forEach((square) => square.hint());
-    } else {
-        board.nextSquares.forEach((square) => square.unhint());
-    }
+    ).checked;
 });

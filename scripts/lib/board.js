@@ -53,7 +53,7 @@ export class Board {
     /** @type {number} The size of this board. */
     size;
     /** @type {boolean} Whether to show hints(available moves) or not. */
-    showHints;
+    #showHints;
     /** @type {HTMLElement} The board HTML element. */
     element;
     /** @type {Array<Array<Square>>} The ranks that consist this board. */
@@ -91,6 +91,18 @@ export class Board {
         }
     }
 
+    /** @param {boolean} value Whether to show hints(available moves) or not. */
+    set showHints(value) {
+        this.#showHints = value;
+        if (value) {
+            this.nextSquares.forEach((square) => square.hint());
+        } else {
+            this.nextSquares.forEach((square) => square.unhint());
+        }
+    }
+    get showHints() {
+        return this.#showHints;
+    }
     /** @returns {Array<Square>} All the squares in this board. */
     get squares() {
         return this.ranks.reduce((prev, rank) => prev.concat(rank), []);
@@ -149,7 +161,7 @@ export class Board {
         }
     }
     /**
-     * Executed when an available square is hit.
+     * Executed when a square is clicked.
      * @param {Square} clickedSquare The square that was clicked.
      */
     clickListener(clickedSquare) {
