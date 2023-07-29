@@ -96,14 +96,7 @@ export class Board {
         this.canvasElement.style.width = "100%";
         this.canvasElement.style.height = "100%";
         this.canvasElement.style.pointerEvents = "none";
-        this.ranks = [];
-        for (let y = 0; y < this.size; y++) {
-            this.ranks.push([]);
-            for (let x = 0; x < this.size; x++) {
-                this.ranks[y].push(new Square(this, x, y));
-                this.element.appendChild(this.getSquare(x, y).element);
-            }
-        }
+        this.addSquares();
     }
 
     /** @param {boolean} value Whether to show hints(available moves) or not. */
@@ -171,6 +164,18 @@ export class Board {
         parent.appendChild(this.element);
         this.setUpCanvas();
     }
+    /** Adds squares to the element, removing all the previous ones. */
+    addSquares() {
+        this.element.replaceChildren(this.canvasElement);
+        this.ranks = [];
+        for (let y = 0; y < this.size; y++) {
+            this.ranks.push([]);
+            for (let x = 0; x < this.size; x++) {
+                this.ranks[y].push(new Square(this, x, y));
+                this.element.appendChild(this.getSquare(x, y).element);
+            }
+        }
+    }
     /** Set up the canvas element to the right width, height, strokeStyle, etc. */
     setUpCanvas() {
         const squareComputedStyle = window.getComputedStyle(
@@ -211,16 +216,8 @@ export class Board {
         this.currentSquare = undefined;
         this.visitedSquares = [];
         this.state = Board.STATE.UNFINISHED;
-        this.element.replaceChildren(this.canvasElement);
         this.element.style.setProperty("--board-size", String(size));
-        this.ranks = [];
-        for (let y = 0; y < this.size; y++) {
-            this.ranks.push([]);
-            for (let x = 0; x < this.size; x++) {
-                this.ranks[y].push(new Square(this, x, y));
-                this.element.appendChild(this.getSquare(x, y).element);
-            }
-        }
+        this.addSquares();
         this.setUpCanvas();
     }
     /**
