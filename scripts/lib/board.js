@@ -56,6 +56,12 @@ export class Board {
     #showHints;
     /** @type {HTMLElement} The board HTML element. */
     element;
+    /** @type {HTMLCanvasElement} The canvas HTML element for drawing the path. */
+    canvasElement;
+    /** @type {number} The square border width used to calculate the canvas width. */
+    #squareBorderWidth;
+    /** @type {number} The square width used to calculate the canvas width. */
+    #squareWidth;
     /** @type {Array<Array<Square>>} The ranks that consist this board. */
     ranks;
     /** @type {Square} The square the knight is currently on. */
@@ -81,6 +87,15 @@ export class Board {
         this.element = document.createElement("article");
         this.element.classList.add("board");
         this.element.style.setProperty("--board-size", String(this.size));
+        this.canvasElement = document.createElement("canvas");
+        this.element.appendChild(this.canvasElement);
+        this.element.style.position = "relative";
+        this.canvasElement.style.position = "absolute";
+        this.canvasElement.style.top = "0";
+        this.canvasElement.style.left = "0";
+        this.canvasElement.style.width = "100%";
+        this.canvasElement.style.height = "100%";
+        this.canvasElement.style.pointerEvents = "none";
         this.ranks = [];
         for (let y = 0; y < this.size; y++) {
             this.ranks.push([]);
@@ -134,11 +149,58 @@ export class Board {
         return this.ranks[y]?.[x];
     }
     /**
+     * Calculates the x, y coordinate on the canvas element of the middle of the given square.
+     * @param {Square} square The square to get the middle point of.
+     * @returns {{x: number, y: number}} The x, y coordinate on the canvas element.
+     */
+    getMiddlePointOfSquareOnCanvas(square) {
+        return {
+            x:
+                this.#squareWidth * (square.x + 0.5) +
+                this.#squareBorderWidth * square.x,
+            y:
+                this.#squareWidth * (square.y + 0.5) +
+                this.#squareBorderWidth * square.y,
+        };
+    }
+    /**
      * Attaches the board element to the end of the parent element.
      * @param {HTMLElement} parent The parent element to attach this board to.
      */
     attach(parent) {
         parent.appendChild(this.element);
+        this.setUpCanvas();
+    }
+    /** Set up the canvas element to the right width, height, strokeStyle, etc. */
+    setUpCanvas() {
+        const squareComputedStyle = window.getComputedStyle(
+            this.squares[0].element
+        );
+        this.#squareBorderWidth = Number(
+            squareComputedStyle
+                .getPropertyValue("border-left-width")
+                .split("px")[0]
+        );
+        this.#squareWidth = Number(
+            squareComputedStyle.getPropertyValue("width").split("px")[0]
+        );
+        const canvasContext = this.canvasElement.getContext("2d");
+        canvasContext.clearRect(
+            0,
+            0,
+            this.canvasElement.width,
+            this.canvasElement.height
+        );
+        this.canvasElement.width =
+            this.#squareBorderWidth * (this.size - 1) +
+            this.#squareWidth * this.size;
+        this.canvasElement.height =
+            this.#squareBorderWidth * (this.size - 1) +
+            this.#squareWidth * this.size;
+        canvasContext.strokeStyle = this.canvasElement.style.getPropertyValue(
+            "--foreground-secondary-color"
+        );
+        canvasContext.globalAlpha = 0.25;
     }
     /**
      * Resets the board.
@@ -149,7 +211,7 @@ export class Board {
         this.currentSquare = undefined;
         this.visitedSquares = [];
         this.state = Board.STATE.UNFINISHED;
-        this.element.replaceChildren();
+        this.element.replaceChildren(this.canvasElement);
         this.element.style.setProperty("--board-size", String(size));
         this.ranks = [];
         for (let y = 0; y < this.size; y++) {
@@ -159,6 +221,7 @@ export class Board {
                 this.element.appendChild(this.getSquare(x, y).element);
             }
         }
+        this.setUpCanvas();
     }
     /**
      * Executed when a square is clicked.
@@ -176,6 +239,19 @@ export class Board {
         this.currentSquare = clickedSquare;
         if (this.showHints) {
             this.nextSquares.forEach((square) => square.hint());
+        }
+        const canvasContext = this.canvasElement.getContext("2d");
+        if (this.visitedSquares.length > 1) {
+            const previousSquare =
+                this.visitedSquares[this.visitedSquares.length - 2];
+            const { x: previousSquareX, y: previousSquareY } =
+                this.getMiddlePointOfSquareOnCanvas(previousSquare);
+            const { x: clickedSquareX, y: clickedSquareY } =
+                this.getMiddlePointOfSquareOnCanvas(clickedSquare);
+            canvasContext.beginPath();
+            canvasContext.moveTo(previousSquareX, previousSquareY);
+            canvasContext.lineTo(clickedSquareX, clickedSquareY);
+            canvasContext.stroke();
         }
         if (this.visitedSquares.length === this.size ** 2) {
             this.state = Board.STATE.SOLVED;
